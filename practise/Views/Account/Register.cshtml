@@ -1,0 +1,10 @@
+@model RegisterForm
+@{ ViewData["Title"] = "Create account"; }
+<section class="form-panel wide"><p class="eyebrow">YOUR NEXT CHAPTER</p><h1>Join StudySpace.</h1><p>Create a student or teacher account to get started.</p>
+<form asp-action="Register" method="post"><div asp-validation-summary="All"></div>
+<div class="pair"><div><label asp-for="FirstName">First name</label><input asp-for="FirstName" autocomplete="given-name" /></div><div><label asp-for="LastName">Last name</label><input asp-for="LastName" autocomplete="family-name" /></div></div>
+<label asp-for="Email">Email address</label><input asp-for="Email" type="email" autocomplete="username" />
+<label asp-for="Role">I am a</label><select asp-for="Role"><option>Student</option><option>Teacher</option></select>
+<div class="pair"><div><label asp-for="StudentNumber">Student number</label><input asp-for="StudentNumber" /><small>Required for students.</small></div><div><label asp-for="EmployeeNumber">Employee number</label><input asp-for="EmployeeNumber" /><small>Required for teachers.</small></div></div>
+<div class="pair"><div><label asp-for="Password"></label><input asp-for="Password" autocomplete="new-password" /></div><div><label asp-for="ConfirmPassword">Confirm password</label><input asp-for="ConfirmPassword" autocomplete="new-password" /></div></div>
+<button type="submit">Create account →</button></form><p class="hint">Already registered? <a asp-action="Login">Sign in</a></p></section>

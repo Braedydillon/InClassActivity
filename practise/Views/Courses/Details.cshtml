@@ -1,0 +1,18 @@
+@model CourseDetails
+@{ ViewData["Title"] = Model.Course.Title; }
+<a asp-action="Index">← Explore courses</a><div class="page-heading"><div><p class="eyebrow">@Model.Course.Code · @Model.Course.CategoryName</p><h1>@Model.Course.Title</h1><p>@Model.Course.TeacherFirstName @Model.Course.TeacherLastName</p></div>
+@if (Model.CanManage) { <a class="button" asp-action="Edit" asp-route-id="@Model.Course.CourseId">Edit course</a> }</div>
+<section class="panel"><h2>About this course</h2><p class="description">@(Model.Course.Description ?? "No description provided yet.")</p>
+@if (User.IsInRole("Student")) { if (Model.IsEnrolled) { <p class="notice success">You're enrolled in this course. <a asp-controller="Learning" asp-action="Index">View my learning →</a></p> } else { <form asp-action="Enrol" method="post"><input type="hidden" name="id" value="@Model.Course.CourseId" /><button>Request enrolment →</button></form> } }
+</section>
+@if (Model.CanManage) {
+<section class="panel"><div class="section-heading"><h2>Your class</h2><span class="badge">@Model.Enrolments.Count students</span></div><p class="hint">Confirm an enrolment before recording a mark. Results are visible to the student as soon as you save.</p>
+@if (Model.Enrolments.Count == 0) { <p class="empty">No enrolments yet. Students can find this course in the catalogue.</p> }
+else { <div class="table-wrap"><table><thead><tr><th>Student</th><th>Enrolment</th><th>Result</th></tr></thead><tbody>
+@foreach (var enrolment in Model.Enrolments) { var result = Model.Results.FirstOrDefault(r => r.EnrolmentId == enrolment.EnrolmentId);
+<tr><td><b>@enrolment.FirstName @enrolment.LastName</b><br /><small>@enrolment.StudentNumber</small></td><td><form asp-action="Status" method="post" class="inline-form"><input type="hidden" name="id" value="@enrolment.EnrolmentId" /><input type="hidden" name="courseId" value="@Model.Course.CourseId" /><label class="sr-only" for="status-@enrolment.EnrolmentId">Enrolment status for @enrolment.StudentNumber</label><select id="status-@enrolment.EnrolmentId" name="status">@foreach (var status in new[] { "Pending", "Confirmed", "Cancelled" }) { <option value="@status" selected="@(status == enrolment.Status)">@status</option> }</select><button class="small secondary">Update</button></form></td><td>
+@if (enrolment.Status == "Confirmed") { <form asp-action="Mark" method="post" class="inline-form"><input type="hidden" name="courseId" value="@Model.Course.CourseId" /><input type="hidden" name="enrolmentId" value="@enrolment.EnrolmentId" /><input type="hidden" name="resultId" value="@(result?.CourseResultId ?? 0)" /><label class="sr-only" for="mark-@enrolment.EnrolmentId">Mark for @enrolment.StudentNumber</label><input id="mark-@enrolment.EnrolmentId" name="finalMark" type="number" min="0" max="100" step="0.01" required value="@result?.FinalMark" placeholder="0–100" /><button class="small">Save mark</button></form>@if (result is not null) { <small>@result.FinalMark% · @result.Outcome</small> } } else { <small>Confirm enrolment to record a result.</small> }
+</td></tr> }
+</tbody></table></div> }</section>
+<section class="panel danger-zone"><h2>Delete course</h2><p class="hint">Only courses without enrolments can be deleted. This cannot be undone.</p><details><summary>Delete this course…</summary><form asp-action="Delete" method="post"><input type="hidden" name="id" value="@Model.Course.CourseId" /><button class="danger">Permanently delete course</button></form></details></section>
+}

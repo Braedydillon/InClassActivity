@@ -1,0 +1,6 @@
+@model List<Category>
+@{ ViewData["Title"] = "Categories"; }
+<div class="page-heading"><div><p class="eyebrow">FIND YOUR FOCUS</p><h1>Course categories</h1><p>Explore the subjects that bring our courses together.</p></div>@if (User.IsInRole("Teacher")) { <a class="button" asp-action="Edit">+ Create category</a> }</div>
+<div class="cards">@foreach (var category in Model) { <article class="card"><h2>@category.Name</h2><p>@category.Description</p><a asp-controller="Courses" asp-action="Index" asp-route-search="@category.Name">Explore courses →</a>
+@if (User.IsInRole("Teacher")) { <div class="actions"><a asp-action="Edit" asp-route-id="@category.CourseCategoryId">Edit</a><details><summary>Delete…</summary><form asp-action="Delete" method="post"><input type="hidden" name="id" value="@category.CourseCategoryId" /><p class="hint">Categories used by courses cannot be deleted.</p><button class="small danger">Confirm deletion</button></form></details></div> }</article> }</div>
+@if (Model.Count == 0) { <p class="empty">No categories have been created yet.</p> }

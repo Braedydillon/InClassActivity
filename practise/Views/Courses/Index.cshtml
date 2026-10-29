@@ -1,0 +1,8 @@
+@model List<Course>
+@{ bool mine = ViewData["Mine"] is true; ViewData["Title"] = mine ? "My teaching" : "Explore courses"; }
+<div class="page-heading"><div><p class="eyebrow">@(mine ? "YOUR TEACHING SPACE" : "THE COURSE COLLECTION")</p><h1>@ViewData["Title"]</h1><p>@(mine ? "Build your courses and keep your classes moving forward." : "Find something that sparks your curiosity.")</p></div>
+@if (User.IsInRole("Teacher")) { <a class="button" asp-action="Edit">+ Create course</a> }</div>
+<form method="get" class="search"><input name="search" value="@ViewData["Search"]" placeholder="Search by course, code or category" aria-label="Search courses" /><input type="hidden" name="mine" value="@mine.ToString().ToLowerInvariant()" /><button>Search</button><a asp-action="Index" asp-route-mine="@mine">Clear</a></form>
+<p class="hint">@Model.Count course(s)</p><div class="cards">
+@foreach (var course in Model) { <article class="card course-card"><div class="course-banner"><span>@course.Code</span><span>↗</span></div><div class="card-content"><span class="badge">@course.CategoryName</span><h2><a asp-action="Details" asp-route-id="@course.CourseId">@course.Title</a></h2><p>@(string.IsNullOrWhiteSpace(course.Description) ? "Explore this course to learn more." : course.Description)</p><div class="card-bottom"><small>@course.TeacherFirstName @course.TeacherLastName</small><a asp-action="Details" asp-route-id="@course.CourseId">View course →</a></div></div></article> }
+</div>@if (Model.Count == 0) { <div class="empty"><h2>No courses here yet.</h2><p>Try a different search, or return later to see new courses.</p></div> }

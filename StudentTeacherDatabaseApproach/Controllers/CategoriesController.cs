@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentTeacherDatabaseApproach.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

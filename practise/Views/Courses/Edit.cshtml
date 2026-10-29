@@ -1,0 +1,6 @@
+@model CourseForm
+@{ ViewData["Title"] = Model.CourseId == 0 ? "Create course" : "Edit course"; }
+<section class="form-panel wide"><a asp-action="Index" asp-route-mine="true">← My teaching</a><h1>@ViewData["Title"]</h1><form asp-action="Edit" method="post"><div asp-validation-summary="All"></div><input asp-for="CourseId" type="hidden" />
+<label asp-for="Code">Course code</label><input asp-for="Code" placeholder="e.g. PROG101" /><label asp-for="Title">Course title</label><input asp-for="Title" />
+<label asp-for="CourseCategoryId">Category</label><select asp-for="CourseCategoryId"><option value="0">Choose a category</option>@foreach (var category in Model.Categories) { <option value="@category.CourseCategoryId">@category.Name</option> }</select><small><a asp-controller="Categories" asp-action="Edit">Create a new category</a></small>
+<label asp-for="Description"></label><textarea asp-for="Description" rows="5"></textarea><button>Save course</button></form></section>

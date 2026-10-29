@@ -1,0 +1,3 @@
+@model Category
+@{ ViewData["Title"] = Model.CourseCategoryId == 0 ? "Create category" : "Edit category"; }
+<section class="form-panel"><a asp-action="Index">← Categories</a><h1>@ViewData["Title"]</h1><form asp-action="Edit" method="post"><div asp-validation-summary="All"></div><input asp-for="CourseCategoryId" type="hidden" /><label asp-for="Name"></label><input asp-for="Name" /><label asp-for="Description"></label><textarea asp-for="Description" rows="4"></textarea><button>Save category</button></form></section>

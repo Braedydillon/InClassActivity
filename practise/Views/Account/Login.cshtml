@@ -1,0 +1,8 @@
+@model LoginForm
+@{ ViewData["Title"] = "Sign in"; }
+<section class="form-panel"><p class="eyebrow">WELCOME BACK</p><h1>Pick up where you left off.</h1><p>Sign in with your student or teacher account.</p>
+@if (ViewData["Notice"] is string notice) { <p class="notice">@notice</p> }
+<form asp-action="Login" method="post"><div asp-validation-summary="All"></div>
+<label asp-for="Email">Email address</label><input asp-for="Email" autocomplete="username" type="email" />
+<label asp-for="Password"></label><input asp-for="Password" autocomplete="current-password" />
+<button type="submit">Sign in →</button></form><p class="hint">New here? <a asp-action="Register">Create an account</a></p></section>

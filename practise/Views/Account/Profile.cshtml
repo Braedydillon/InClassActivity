@@ -1,0 +1,4 @@
+@model ProfileForm
+@{ ViewData["Title"] = "My profile"; }
+<section class="form-panel"><p class="eyebrow">ACCOUNT DETAILS</p><h1>My profile</h1><p>@User.Identity?.Name</p><p class="hint">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value · @ViewData["Number"]</p>
+<form asp-action="Profile" method="post"><div asp-validation-summary="All"></div><label asp-for="FirstName">First name</label><input asp-for="FirstName" /><label asp-for="LastName">Last name</label><input asp-for="LastName" /><button>Save changes</button></form></section>

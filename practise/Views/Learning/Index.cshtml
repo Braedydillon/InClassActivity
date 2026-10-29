@@ -1,0 +1,9 @@
+@model LearningPage
+@{ ViewData["Title"] = "My learning"; }
+<div class="page-heading"><div><p class="eyebrow">YOUR PROGRESS, IN ONE PLACE</p><h1>My learning</h1><p>Keep track of your enrolments and celebrate each result.</p></div><a class="button" asp-controller="Courses" asp-action="Index">Explore courses →</a></div>
+<div class="stats"><article><strong>@Model.Enrolments.Count</strong><span>Enrolled courses</span></article><article><strong>@Model.Enrolments.Count(e => e.Status == "Confirmed")</strong><span>Confirmed enrolments</span></article><article><strong>@Model.Results.Count</strong><span>Results recorded</span></article></div>
+@if (Model.Enrolments.Count == 0) { <div class="empty"><h2>Your learning journey starts here.</h2><p>Choose a course from the catalogue to request enrolment.</p></div> }
+<div class="cards">@foreach (var enrolment in Model.Enrolments) { var result = Model.Results.FirstOrDefault(r => r.EnrolmentId == enrolment.EnrolmentId);
+<article class="card"><span class="badge">@enrolment.Status</span><p class="eyebrow">@enrolment.CourseCode</p><h2><a asp-controller="Courses" asp-action="Details" asp-route-id="@enrolment.CourseId">@enrolment.CourseTitle</a></h2>
+@if (result is not null) { <div class="result"><strong>@result.FinalMark%</strong><span>@result.Outcome</span></div> } else { <p class="hint">Your result will appear here when your teacher records it.</p><details><summary>Withdraw from this course…</summary><form asp-action="Withdraw" method="post"><input type="hidden" name="id" value="@enrolment.EnrolmentId" /><p class="hint">Your enrolment will be removed.</p><button class="small danger">Confirm withdrawal</button></form></details> }</article>
+}</div>
