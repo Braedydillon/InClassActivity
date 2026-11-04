@@ -18,6 +18,7 @@ public class AccountController(ApiClient api) : Controller
             api.ClearSession();
             try {
                 await api.Execute(HttpMethod.Post, "api/auth/login", form);
+                // Build the MVC identity from the profile returned by the authenticated API.
                 var profile = await api.Get<AccountProfile>("api/auth/profile");
                 var identity = new ClaimsIdentity(new[] {
                     new Claim(ClaimTypes.NameIdentifier, profile.UserId.ToString()),
@@ -29,6 +30,7 @@ public class AccountController(ApiClient api) : Controller
                 return RedirectToAction("Index", "Courses");
             } catch (ApiException ex) { api.ClearSession(); ModelState.AddModelError("", ex.Message); }
         }
+        // Clear both the model and ModelState so a failed login does not redisplay the password.
         form.Password = "";
         ModelState.Remove(nameof(form.Password));
         return View(form);

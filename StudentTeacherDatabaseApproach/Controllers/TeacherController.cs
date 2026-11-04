@@ -5,6 +5,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    // Demonstrates an endpoint restricted to the Teacher role.
     public class TeacherController : Controller
     {
         [Authorize(Roles = "Teacher")]

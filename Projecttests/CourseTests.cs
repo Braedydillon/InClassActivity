@@ -7,6 +7,7 @@ using StudentTeacherDatabaseApproach.DTOs;
 namespace Projecttests;
 
 [TestClass]
+// Checks teacher ownership, course validation and deletion restrictions using isolated test data.
 public class CourseTests
 {
     [TestMethod]
@@ -64,6 +65,7 @@ public class CourseTests
     }
 
     [TestMethod]
+    // Having the Teacher role does not authorize changes to another teacher course.
     public async Task UpdateCourse_NonOwnerTeacher_ReturnsForbid()
     {
         using var db = TestData.NewContext();

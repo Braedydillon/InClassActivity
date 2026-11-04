@@ -5,6 +5,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    // Demonstrates an endpoint that requires login without requiring a particular role.
     public class DashBoardController : ControllerBase
     {
         [Authorize] // any logged-in user, regardless of role

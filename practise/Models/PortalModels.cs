@@ -2,10 +2,12 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace practise.Models;
 
+// Validates the email and password submitted by the MVC login page.
 public class LoginForm {
     [Required, EmailAddress] public string Email { get; set; } = "";
     [Required, DataType(DataType.Password)] public string Password { get; set; } = "";
 }
+// Extends login fields with profile details and role-dependent registration validation.
 public class RegisterForm : LoginForm, IValidatableObject {
     [Required, StringLength(100)] public string FirstName { get; set; } = "";
     [Required, StringLength(100)] public string LastName { get; set; } = "";
@@ -18,21 +20,25 @@ public class RegisterForm : LoginForm, IValidatableObject {
         if (Role == "Teacher" && string.IsNullOrWhiteSpace(EmployeeNumber)) yield return new("Enter your employee number.", [nameof(EmployeeNumber)]);
     }
 }
+// Contains the editable name fields shown on the profile page.
 public class ProfileForm {
     [Required, StringLength(100)] public string FirstName { get; set; } = "";
     [Required, StringLength(100)] public string LastName { get; set; } = "";
 }
+// Deserializes the API account response used to establish the MVC identity.
 public class AccountProfile {
     public int UserId { get; set; }
     public string Email { get; set; } = "";
     public string Role { get; set; } = "";
     public ProfileDetails Profile { get; set; } = new();
 }
+// Carries role-specific identifiers alongside the shared profile name fields.
 public class ProfileDetails : ProfileForm {
     public int TeacherProfileId { get; set; }
     public string? StudentNumber { get; set; }
     public string? EmployeeNumber { get; set; }
 }
+// Holds editable course fields and category choices used to render the edit form.
 public class CourseForm {
     public int CourseId { get; set; }
     [Required, StringLength(30)] public string Code { get; set; } = "";
@@ -41,17 +47,20 @@ public class CourseForm {
     [Range(1, int.MaxValue, ErrorMessage = "Choose a category.")] public int CourseCategoryId { get; set; }
     [ValidateNever] public List<Category> Categories { get; set; } = [];
 }
+// Extends the course form with teacher and category details returned by the API.
 public class Course : CourseForm {
     public string CategoryName { get; set; } = "";
     public string? TeacherFirstName { get; set; }
     public string? TeacherLastName { get; set; }
     public int TeacherProfileId { get; set; }
 }
+// Represents API category data and validates fields used by the category edit form.
 public class Category {
     public int CourseCategoryId { get; set; }
     [Required, StringLength(100)] public string Name { get; set; } = "";
     [StringLength(500)] public string? Description { get; set; }
 }
+// Contains enrolment and student details returned by the API for the learning and course pages.
 public class Enrolment {
     public int EnrolmentId { get; set; }
     public int CourseId { get; set; }
@@ -62,6 +71,7 @@ public class Enrolment {
     public string FirstName { get; set; } = "";
     public string LastName { get; set; } = "";
 }
+// Contains a recorded mark and outcome returned by the API for display.
 public class CourseResult {
     public int CourseResultId { get; set; }
     public int EnrolmentId { get; set; }
@@ -70,6 +80,7 @@ public class CourseResult {
     public decimal FinalMark { get; set; }
     public string Outcome { get; set; } = "";
 }
+// Combines course data, enrolments, results and UI permissions for the details page.
 public class CourseDetails {
     public Course Course { get; set; } = new();
     public bool CanManage { get; set; }
@@ -77,6 +88,7 @@ public class CourseDetails {
     public List<Enrolment> Enrolments { get; set; } = [];
     public List<CourseResult> Results { get; set; } = [];
 }
+// Combines the signed-in student enrolments and results for the learning page.
 public class LearningPage {
     public List<Enrolment> Enrolments { get; set; } = [];
     public List<CourseResult> Results { get; set; } = [];

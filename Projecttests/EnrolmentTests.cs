@@ -7,6 +7,7 @@ using StudentTeacherDatabaseApproach.DTOs;
 namespace Projecttests;
 
 [TestClass]
+// Checks student ownership, teacher status changes and restrictions once results exist.
 public class EnrolmentTests
 {
     [TestMethod]
@@ -123,6 +124,7 @@ public class EnrolmentTests
     }
 
     [TestMethod]
+    // A recorded result must prevent withdrawal so the academic record is retained.
     public async Task Withdraw_WithRecordedResult_ReturnsConflict()
     {
         using var db = TestData.NewContext();

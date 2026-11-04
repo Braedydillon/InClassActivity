@@ -9,6 +9,7 @@ using StudentTeacherDatabaseApproach.Models;
 namespace Projecttests;
 
 [TestClass]
+// Tests registration, credential checks and profile ownership by calling controllers directly.
 public class AuthTests
 {
     private static RegisterDto StudentDto() => new()
@@ -33,6 +34,7 @@ public class AuthTests
         Assert.AreEqual("Student", user.Role);
         Assert.AreEqual("S200", user.StudentProfile!.StudentNumber);
         Assert.AreNotEqual("Password123!", user.PasswordHash);
+        // Verify the stored hash accepts the original password, not merely that the stored text is different.
         Assert.AreNotEqual(PasswordVerificationResult.Failed,
             new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, "Password123!"));
     }

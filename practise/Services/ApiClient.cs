@@ -33,6 +33,7 @@ public sealed class ApiClient(HttpClient client, IHttpContextAccessor accessor)
         try { response = await client.SendAsync(request, accessor.HttpContext!.RequestAborted); }
         catch (HttpRequestException) { throw new ApiException(503, "The API is unavailable. Start the StudentTeacherDatabaseApproach project and try again."); }
         catch (TaskCanceledException) { throw new ApiException(503, "The API took too long to respond. Check that the API and SQL Server are running, then try again."); }
+        // Store API authentication cookie updates in the current user session.
         if (response.Headers.TryGetValues("Set-Cookie", out var values)) {
             foreach (var value in values) {
                 var pair = value.Split(';', 2)[0].Split('=', 2);
@@ -50,6 +51,7 @@ public sealed class ApiClient(HttpClient client, IHttpContextAccessor accessor)
             >= 300 and < 400 => "The API redirected the request. Set Api:BaseUrl to the API's active HTTPS address, or run its HTTP launch profile.",
             _ => "The request could not be completed."
         };
+        // Extract validation details from API errors for display beside the submitted form.
         if (status is 400 or 409) {
             var text = await response.Content.ReadAsStringAsync();
             try {
@@ -60,6 +62,7 @@ public sealed class ApiClient(HttpClient client, IHttpContextAccessor accessor)
                 else if (root.TryGetProperty("title", out var title)) message = title.GetString()!;
             } catch (JsonException) { if (!text.Contains('<') && text.Length < 1000) message = text; }
         }
+        // Successful responses belong to the caller; dispose failed responses before throwing.
         response.Dispose();
         throw new ApiException(status, message);
     }
@@ -69,6 +72,7 @@ public sealed class ApiExceptionFilter(Microsoft.AspNetCore.Mvc.ModelBinding.IMo
 {
     public async Task OnExceptionAsync(ExceptionContext context) {
         if (context.Exception is not ApiException error) return;
+        // Clear the local login when the upstream API rejects the session.
         if (error.Status == 401) {
             context.HttpContext.Session.Clear();
             await context.HttpContext.SignOutAsync();

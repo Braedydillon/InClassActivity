@@ -2,6 +2,7 @@
 
 namespace StudentTeacherDatabaseApproach.DTOs
 {
+    // Accepts editable course fields; the controller derives the teacher from the signed-in account.
     public class CourseDto
     {
         [Range(1, int.MaxValue)]

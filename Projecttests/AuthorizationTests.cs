@@ -32,6 +32,7 @@ namespace Projecttests
             string actionName,
             string expectedRole)
         {
+            // Inspect authorization attributes only; direct controller calls do not run the authorization middleware.
             MethodInfo[] methods = controllerType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(method => method.Name == actionName)

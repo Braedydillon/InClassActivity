@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentTeacherDatabaseApproach.Models;
 
+// Stores login credentials and role, with a linked student or teacher profile.
 public partial class User
 {
     public int UserId { get; set; }

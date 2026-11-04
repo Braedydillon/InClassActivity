@@ -37,6 +37,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
             if (await _context.CourseResults.AnyAsync(r => r.EnrolmentId == id))
                 return Conflict("A result has already been recorded for this enrolment.");
 
+            // Calculate the outcome on the server so it stays consistent with the submitted mark.
             var result = new CourseResult
             {
                 EnrolmentId = id,
@@ -113,6 +114,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
             if (dto.FinalMark < 0 || dto.FinalMark > 100)
                 return BadRequest("Final mark must be between 0 and 100.");
 
+            // Correct both the mark and outcome together when a teacher updates a result.
             result.FinalMark = dto.FinalMark;
             result.Outcome = dto.FinalMark >= 50 ? "Pass" : "Fail";
             await _context.SaveChangesAsync();

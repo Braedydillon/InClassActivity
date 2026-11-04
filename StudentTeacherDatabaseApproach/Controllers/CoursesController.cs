@@ -43,6 +43,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetCourses()
         {
+            // Project only the fields needed by clients; this read-only query does not need change tracking.
             var courses = await _context.Courses.AsNoTracking()
                 .Select(c => new
                 {
@@ -186,6 +187,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
             if (course == null) return NotFound("Course not found.");
 
             int? teacherId = await GetCurrentTeacherProfileId();
+            // The Teacher role alone is insufficient: only the owner may modify this course.
             if (teacherId == null || course.TeacherProfileId != teacherId.Value)
                 return Forbid();
 
@@ -238,6 +240,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
             return NoContent();
         }
 
+        // Translate the signed-in account ID into its linked teacher profile ID.
         private async Task<int?> GetCurrentTeacherProfileId()
         {
             string? userIdText = User.FindFirstValue(ClaimTypes.NameIdentifier);

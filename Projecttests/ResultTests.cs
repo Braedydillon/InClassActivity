@@ -7,9 +7,11 @@ using StudentTeacherDatabaseApproach.DTOs;
 namespace Projecttests;
 
 [TestClass]
+// Checks mark boundaries, pass/fail calculation and access to student results.
 public class ResultTests
 {
     [TestMethod]
+    // Exercise the exact pass boundary: a confirmed enrolment with a mark of 50 must pass.
     public async Task RecordResult_ConfirmedEnrolment_50PercentIsPass()
     {
         using var db = TestData.NewContext();
@@ -29,6 +31,7 @@ public class ResultTests
     }
 
     [TestMethod]
+    // Exercise the failing side of the boundary to catch an incorrect pass threshold.
     public async Task RecordResult_49PercentIsFail()
     {
         using var db = TestData.NewContext();

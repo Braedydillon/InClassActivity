@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentTeacherDatabaseApproach.DTOs
 {
+    // Carries account and profile details; the controller requires the number matching the chosen role.
     public class RegisterDto
     {
         //This class defines the information the registration process expects.

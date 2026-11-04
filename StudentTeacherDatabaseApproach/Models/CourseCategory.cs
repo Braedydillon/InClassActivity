@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentTeacherDatabaseApproach.Models;
 
+// Groups related courses under a shared name and description.
 public partial class CourseCategory
 {
     public int CourseCategoryId { get; set; }

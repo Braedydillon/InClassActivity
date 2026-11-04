@@ -4,6 +4,7 @@ using practise.Models;
 using practise.Services;
 namespace practise.Controllers;
 [Authorize(Roles = "Student")]
+// Loads the current student learning records and forwards withdrawal requests to the API.
 public class LearningController(ApiClient api) : Controller {
     public async Task<IActionResult> Index() => View(new LearningPage {
         Enrolments = await api.Get<List<Enrolment>>("api/enrolments/my"),

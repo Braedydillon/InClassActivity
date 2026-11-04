@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentTeacherDatabaseApproach.Models;
 
+// Stores teacher-specific details and links the account to the courses they teach.
 public partial class TeacherProfile
 {
     public int TeacherProfileId { get; set; }

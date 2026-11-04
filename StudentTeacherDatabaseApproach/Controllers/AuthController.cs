@@ -172,6 +172,7 @@ public class AuthController : Controller
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
+        // Read the account identified by the authentication cookie, not an ID supplied by the client.
         var user = await _context.Users.AsNoTracking()
             .FirstOrDefaultAsync(u => u.UserId == userId);
         if (user == null) return Unauthorized();

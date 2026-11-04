@@ -7,6 +7,7 @@ using StudentTeacherDatabaseApproach.DTOs;
 namespace Projecttests;
 
 [TestClass]
+// Checks category persistence, duplicate names and protection against deleting categories in use.
 public class CategoryTests
 {
     [TestMethod]
@@ -88,6 +89,7 @@ public class CategoryTests
     }
 
     [TestMethod]
+    // A rejected rename must leave the original category unchanged.
     public async Task UpdateCategory_ToExistingName_ReturnsConflictAndPreservesOriginal()
     {
         using var db = TestData.NewContext();

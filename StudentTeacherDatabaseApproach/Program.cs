@@ -27,6 +27,7 @@ namespace StudentTeacherDatabaseApproach
                     CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    // Return HTTP error codes so API clients do not receive an HTML login redirect.
                     options.Events.OnRedirectToLogin = context =>
                     {
                         context.Response.StatusCode = 401;

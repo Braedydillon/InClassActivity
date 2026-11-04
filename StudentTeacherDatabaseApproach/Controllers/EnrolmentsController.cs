@@ -30,6 +30,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
             if (await _context.Enrolments.AnyAsync(e => e.CourseId == id && e.StudentProfileId == studentId.Value))
                 return Conflict("You are already enrolled in this course.");
 
+            // New requests start as Pending until the course teacher manages their status.
             var enrolment = new Enrolment
             {
                 CourseId = id,
@@ -141,6 +142,7 @@ namespace StudentTeacherDatabaseApproach.Controllers
             return NoContent();
         }
 
+        // Derive ownership from the authenticated identity rather than accepting a user ID in the request.
         private int? CurrentUserId() => int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int id) ? id : null;
 
         private async Task<int?> CurrentStudentProfileId()

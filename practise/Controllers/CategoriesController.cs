@@ -4,6 +4,7 @@ using practise.Models;
 using practise.Services;
 namespace practise.Controllers;
 [Authorize]
+// Provides category pages and forwards validated changes to the API.
 public class CategoriesController(ApiClient api) : Controller {
     public async Task<IActionResult> Index() => View(await api.Get<List<Category>>("api/categories"));
     [Authorize(Roles = "Teacher"), HttpGet] public async Task<IActionResult> Edit(int id = 0) {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentTeacherDatabaseApproach.Models;
 
+// A course belongs to one teacher and category and can have many student enrolments.
 public partial class Course
 {
     public int CourseId { get; set; }

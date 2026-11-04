@@ -14,6 +14,7 @@ internal static class TestData
 {
     public static StudentTeacherDbContext NewContext()
     {
+        // A unique database name isolates each test; this provider does not enforce SQL Server relational constraints.
         var options = new DbContextOptionsBuilder<StudentTeacherDbContext>()
             .UseInMemoryDatabase($"tests-{Guid.NewGuid():N}")
             .Options;
@@ -68,6 +69,7 @@ internal static class TestData
 
     public static Course AddCourse(StudentTeacherDbContext db, User teacher, string code = "CS101")
     {
+        // Create a separate category so course fixtures do not depend on another test setup.
         var category = AddCategory(db, $"Category-{Guid.NewGuid():N}");
         var course = new Course
         {
@@ -161,6 +163,7 @@ internal sealed class RecordingAuthenticationService : Microsoft.AspNetCore.Auth
     public Task SignInAsync(HttpContext context, string? scheme, ClaimsPrincipal principal,
         Microsoft.AspNetCore.Authentication.AuthenticationProperties? properties)
     {
+        // Capture the requested identity and scheme so the login test can assert them without issuing a cookie.
         SignInScheme = scheme;
         SignedInPrincipal = principal;
         return Task.CompletedTask;

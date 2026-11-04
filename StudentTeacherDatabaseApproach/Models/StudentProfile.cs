@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentTeacherDatabaseApproach.Models;
 
+// Stores student-specific details and links the account to its enrolments.
 public partial class StudentProfile
 {
     public int StudentProfileId { get; set; }

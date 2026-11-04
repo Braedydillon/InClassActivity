@@ -2,6 +2,7 @@
 
 namespace StudentTeacherDatabaseApproach.DTOs
 {
+    // Defines the credentials accepted by the login endpoint, with input validation attributes.
     public class LoginDto
     {
         [Required]

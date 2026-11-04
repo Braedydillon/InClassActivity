@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudentTeacherDatabaseApproach.Models;
 
+// Links a student to a course; its result is absent until a mark is recorded.
 public partial class Enrolment
 {
     public int EnrolmentId { get; set; }

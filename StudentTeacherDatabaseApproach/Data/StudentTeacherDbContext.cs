@@ -26,6 +26,7 @@ public partial class StudentTeacherDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    // Map the entity classes to the existing SQL Server tables, keys and relationships.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Course>(entity =>
@@ -69,6 +70,7 @@ public partial class StudentTeacherDbContext : DbContext
 
             entity.ToTable("Course_Results");
 
+            // The unique enrolment key allows at most one result per enrolment.
             entity.HasIndex(e => e.EnrolmentId, "UQ__Course_R__5C0E5FCEB5D92F08").IsUnique();
 
             entity.Property(e => e.FinalMark).HasColumnType("decimal(5, 2)");
@@ -85,6 +87,7 @@ public partial class StudentTeacherDbContext : DbContext
         {
             entity.HasKey(e => e.EnrolmentId).HasName("PK__Enrolmen__5C0E5FCFCBC87291");
 
+            // The combined unique key prevents a student from enrolling in the same course twice.
             entity.HasIndex(e => new { e.StudentProfileId, e.CourseId }, "UQ__Enrolmen__4EB907AB79EDE4C1").IsUnique();
 
             entity.Property(e => e.EnrolledAt).HasDefaultValueSql("(getdate())");

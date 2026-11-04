@@ -5,6 +5,7 @@ using practise.Services;
 namespace practise.Controllers;
 
 [Authorize]
+// Builds course pages and forwards course, enrolment and mark changes to the API.
 public class CoursesController(ApiClient api) : Controller
 {
     public async Task<IActionResult> Index(string? search, bool mine = false) {
